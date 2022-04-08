@@ -1,0 +1,44 @@
+[
+    {
+        "transactionName": "{{assetCamelCase }}Exists",
+        "transactionLabel": "A test {{assetCamelCase }}Exists transaction",
+        "arguments": [
+            "001"
+        ],
+        "transientData": {}
+    },
+    {
+        "transactionName": "create{{asset }}",
+        "transactionLabel": "A test create{{asset }} transaction",
+        "arguments": [
+            "001",
+            "some value"
+        ],
+        "transientData": {}
+    },
+    {
+        "transactionName": "read{{asset }}",
+        "transactionLabel": "A test read{{asset }} transaction",
+        "arguments": [
+            "001"
+        ],
+        "transientData": {}
+    },
+    {
+        "transactionName": "update{{asset }}",
+        "transactionLabel": "A test update{{asset }} transaction",
+        "arguments": [
+            "001",
+            "some other value"
+        ],
+        "transientData": {}
+    },
+    {
+        "transactionName": "delete{{asset }}",
+        "transactionLabel": "A test delete{{asset }} transaction",
+        "arguments": [
+            "001"
+        ],
+        "transientData": {}
+    }
+]

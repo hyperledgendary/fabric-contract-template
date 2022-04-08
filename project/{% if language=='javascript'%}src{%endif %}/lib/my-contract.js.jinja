@@ -1,0 +1,56 @@
+/*
+ * {{license }}
+ */
+
+'use strict';
+
+const { Contract } = require('fabric-contract-api');
+
+class {{asset }}Contract extends Contract {
+
+    async {{asset }}Exists(ctx, {{asset }}Id) {
+        const buffer = await ctx.stub.getState({{asset }}Id);
+        return (!!buffer && buffer.length > 0);
+    }
+
+    async create{{asset }}(ctx, {{asset }}Id, value) {
+        const exists = await this.{{asset }}Exists(ctx, {{asset }}Id);
+        if (exists) {
+            throw new Error(`The {{assetSpaceSeparator }} ${ {{asset }}Id} already exists`);
+        }
+        const asset = { value };
+        const buffer = Buffer.from(JSON.stringify(asset));
+        await ctx.stub.putState({{asset }}Id, buffer);
+    }
+
+    async read{{asset }}(ctx, {{asset }}Id) {
+        const exists = await this.{{asset }}Exists(ctx, {{asset }}Id);
+        if (!exists) {
+            throw new Error(`The {{assetSpaceSeparator }} ${ {{asset }}Id} does not exist`);
+        }
+        const buffer = await ctx.stub.getState({{asset }}Id);
+        const asset = JSON.parse(buffer.toString());
+        return asset;
+    }
+
+    async update{{asset }}(ctx, {{asset }}Id, newValue) {
+        const exists = await this.{{asset }}Exists(ctx, {{asset }}Id);
+        if (!exists) {
+            throw new Error(`The {{assetSpaceSeparator }} ${ {{asset }}Id} does not exist`);
+        }
+        const asset = { value: newValue };
+        const buffer = Buffer.from(JSON.stringify(asset));
+        await ctx.stub.putState({{asset }}Id, buffer);
+    }
+
+    async delete{{asset }}(ctx, {{asset }}Id) {
+        const exists = await this.{{asset }}Exists(ctx, {{asset }}Id);
+        if (!exists) {
+            throw new Error(`The {{assetSpaceSeparator }} ${ {{asset }}Id} does not exist`);
+        }
+        await ctx.stub.deleteState({{asset }}Id);
+    }
+
+}
+
+module.exports = {{asset }}Contract;
