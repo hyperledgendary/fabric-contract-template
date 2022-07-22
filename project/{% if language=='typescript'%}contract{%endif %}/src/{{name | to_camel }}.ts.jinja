@@ -1,0 +1,63 @@
+/*
+ * {{spdxAndLicense}}
+ */
+
+import { Context, Contract, Info, Returns, Transaction } from 'fabric-contract-api';
+import { {{asset | to_camel }} } from './{{asset | to_camel }}';
+
+@Info({title: '{{name}}', description: '{{description }}' })
+export class {{name | to_camel}} extends Contract {
+
+    @Transaction(false)
+    @Returns('boolean')
+    public async {{asset |replace(' ','_')| to_lower_camel }}Exists(ctx: Context, {{asset| to_lower_camel }}Id: string): Promise<boolean> {
+        const data: Uint8Array = await ctx.stub.getState({{asset| to_lower_camel }}Id);
+        return (!!data && data.length > 0);
+    }
+
+    @Transaction()
+    public async create{{asset | to_camel }}(ctx: Context, {{asset| to_lower_camel }}Id: string, value: string): Promise<void> {
+        const exists: boolean = await this.{{asset| to_lower_camel }}Exists(ctx, {{asset| to_lower_camel }}Id);
+        if (exists) {
+            throw new Error(`The {{assetSpaceSeparator }} {{asset| to_lower_camel }}Id already exists`);
+        }
+        const {{asset| to_lower_camel }}: {{asset }} = new {{asset }}();
+        {{asset| to_lower_camel }}.value = value;
+        const buffer: Buffer = Buffer.from(JSON.stringify({{asset| to_lower_camel }}));
+        await ctx.stub.putState({{asset| to_lower_camel }}Id, buffer);
+    }
+
+    @Transaction(false)
+    @Returns('{{asset  | to_camel }}')
+    public async read{{asset  | to_camel }}(ctx: Context, {{asset| to_lower_camel }}Id: string): Promise<{{asset }}> {
+        const exists: boolean = await this.{{asset| to_lower_camel }}Exists(ctx, {{asset| to_lower_camel }}Id);
+        if (!exists) {
+            throw new Error(`The {{assetSpaceSeparator }} {{asset| to_lower_camel }}Id does not exist`);
+        }
+        const data: Uint8Array = await ctx.stub.getState({{asset| to_lower_camel }}Id);
+        const {{asset| to_lower_camel }}: {{asset  | to_camel }} = JSON.parse(data.toString()) as {{asset  | to_camel }};
+        return {{asset| to_lower_camel }};
+    }
+
+    @Transaction()
+    public async update{{asset }}(ctx: Context, {{asset| to_lower_camel }}Id: string, newValue: string): Promise<void> {
+        const exists: boolean = await this.{{asset| to_lower_camel }}Exists(ctx, {{asset| to_lower_camel }}Id);
+        if (!exists) {
+            throw new Error(`The {{asset }} {{asset| to_lower_camel }}Id does not exist`);
+        }
+        const {{asset| to_lower_camel }}: {{asset }} = new {{asset }}();
+        {{asset| to_lower_camel }}.value = newValue;
+        const buffer: Buffer = Buffer.from(JSON.stringify({{asset| to_lower_camel }}));
+        await ctx.stub.putState({{asset| to_lower_camel }}Id, buffer);
+    }
+
+    @Transaction()
+    public async delete{{asset | to_camel  }}(ctx: Context, {{asset| to_lower_camel }}Id: string): Promise<void> {
+        const exists: boolean = await this.{{asset| to_lower_camel }}Exists(ctx, {{asset| to_lower_camel }}Id);
+        if (!exists) {
+            throw new Error(`The {{asset}} {{asset| to_lower_camel }}Id does not exist`);
+        }
+        await ctx.stub.deleteState({{asset| to_lower_camel }}Id);
+    }
+
+}

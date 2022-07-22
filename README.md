@@ -7,3 +7,13 @@ This template is designed to run with [Copier v6](https://copier.readthedocs.io/
 ```
 copier https://github.com/hyperledgendary/fabric-contract-template.git MyNewContract
 ```
+
+
+# Not got copier?
+
+```bash
+python3 -m pip install --user pipx
+python3 -m pipx ensurepath
+
+pipx install copier && pipx inject copier jinja2-strcase
+```

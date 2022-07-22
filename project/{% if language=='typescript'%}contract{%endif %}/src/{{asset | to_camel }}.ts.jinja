@@ -1,0 +1,13 @@
+/*
+ * {{spdxAndLicense}}
+ */
+
+import { Object as DataType, Property } from 'fabric-contract-api';
+
+@DataType()
+export class {{asset | to_camel }} {
+
+    @Property()
+    public value: string;
+
+}
